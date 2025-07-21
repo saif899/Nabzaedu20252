@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>اختبار الميول الاحترافي - مشروع نبذة</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* --- NEW: Brand Color Palette --- */
+    :root {
+      --primary-color: #ff6600;
+      --secondary-color: #9c27b0; /* A shade of purple */
+      --bg-start: #2e003e;
+      --bg-end: #1b1b1b;
+      --text-color: #f0f0f0;
+      --text-secondary: #c0c0c0;
+      --surface-color-rgba: rgba(46, 0, 62, 0.15); /* Semi-transparent purple for glass effect */
+      --border-color-rgba: rgba(255, 255, 255, 0.1);
+      --shadow-color: rgba(255, 102, 0, 0.3);
+    }
+
+    /* --- Animated Background --- */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100vh;
+      background: linear-gradient(135deg, var(--bg-start), var(--bg-end));
+      z-index: -2;
+    }
+    .background-shapes {
+      position: fixed; top: 0; left: 0;
+      width: 100%; height: 100vh;
+      overflow: hidden; z-index: -1;
+    }
+    .background-shapes span {
+      position: absolute; display: block;
+      width: 20px; height: 20px;
+      animation: animate-shapes 25s linear infinite;
+      bottom: -150px; border-radius: 50%;
+    }
+    /* Using brand colors for shapes */
+    .background-shapes span:nth-child(odd) { background: rgba(255, 102, 0, 0.1); }
+    .background-shapes span:nth-child(even) { background: rgba(156, 39, 176, 0.1); }
+    .background-shapes span:nth-child(1) { left: 25%; width: 80px; height: 80px; animation-delay: 0s; }
+    .background-shapes span:nth-child(2) { left: 10%; width: 20px; height: 20px; animation-delay: 2s; animation-duration: 12s; }
+    .background-shapes span:nth-child(3) { left: 70%; width: 20px; height: 20px; animation-delay: 4s; }
+    .background-shapes span:nth-child(4) { left: 40%; width: 60px; height: 60px; animation-delay: 0s; animation-duration: 18s; }
+    .background-shapes span:nth-child(5) { left: 65%; width: 20px; height: 20px; animation-delay: 0s; }
+    .background-shapes span:nth-child(6) { left: 75%; width: 110px; height: 110px; animation-delay: 3s; }
+    .background-shapes span:nth-child(7) { left: 35%; width: 150px; height: 150px; animation-delay: 7s; }
+
+    @keyframes animate-shapes {
+      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(-120vh) rotate(720deg); opacity: 0; }
+    }
+
+    /* --- NEW: Glassmorphism Design --- */
+    body {
+      font-family: 'Cairo', sans-serif;
+      margin: 0; padding: 20px 0;
+      color: var(--text-color);
+      min-height: 100vh;
+      display: flex; justify-content: center; align-items: center;
+    }
+    .container {
+      max-width: 750px; width: 90%;
+      background: var(--surface-color-rgba);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      padding: 2.5rem;
+      border-radius: 25px;
+      border: 1px solid var(--border-color-rgba);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+      animation: fadeIn 0.8s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    h1, h2, h3 { color: var(--primary-color); text-align: center; font-weight: 700; }
+    h1 { font-size: 2.2rem; text-shadow: 0 0 10px var(--shadow-color); }
+    p, ul { color: var(--text-secondary); line-height: 1.9; }
+    ul { list-style: none; padding-right: 0; }
+    #intro ul li::before { content: "🔹"; color: var(--primary-color); margin-left: 10px; }
+
+    .question-box {
+      margin: 20px 0; padding: 1.5rem;
+      border-radius: 15px;
+      background: rgba(0,0,0,0.2);
+    }
+    .answers {
+      margin-top: 1rem; display: grid;
+      grid-template-columns: 1fr; gap: 10px;
+    }
+    .answers label {
+      padding: 15px;
+      background: var(--surface-color-rgba);
+      border: 1px solid var(--border-color-rgba);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s ease-out;
+    }
+    .answers label:hover {
+      background: rgba(255, 102, 0, 0.1);
+      border-color: var(--primary-color);
+    }
+    .answers input { display: none; }
+    .answers input:checked + span { color: var(--primary-color); font-weight: 600; }
+    .answers input:checked + span::before { content: '✔ '; }
+
+    button {
+      background: var(--primary-color);
+      border: none; padding: 15px 30px;
+      color: #fff; font-weight: bold; font-size: 1rem;
+      border-radius: 12px; cursor: pointer;
+      margin-top: 1.5rem; display: block; width: 100%;
+      transition: all 0.3s ease;
+      font-family: 'Cairo', sans-serif;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.4);
+    }
+    button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px var(--shadow-color);
+    }
+    .hidden { display: none; }
+    .animate-question { animation: slideUp 0.5s ease-out; }
+    @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+    .result-box li {
+      padding: 12px; margin-bottom: 10px;
+      background: var(--surface-color-rgba);
+      border: 1px solid var(--border-color-rgba);
+      border-radius: 10px; font-size: 1.1rem;
+      color: var(--text-color);
+    }
+    .details-button {
+      background: var(--secondary-color);
+    }
+     .details-button:hover {
+      box-shadow: 0 5px 15px rgba(156, 39, 176, 0.4);
+    }
+    #detail-display {
+      background: var(--surface-color-rgba);
+      backdrop-filter: blur(10px);
+      padding: 2rem; border-radius: 15px;
+      margin-top: 1.5rem;
+      border: 1px solid var(--primary-color);
+    }
+    #detail-display h3 i { color: var(--primary-color); }
+    .tansik-note {
+      font-size: 0.9rem;
+      background-color: rgba(255, 152, 0, 0.1);
+      border: 1px solid rgba(255, 152, 0, 0.5);
+      padding: 10px; border-radius: 8px; margin-top: 15px;
+      color: #ffd54f;
+    }
+  </style>
+</head>
+<body>
+  <div class="background-shapes">
+    <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+  </div>
+  <div class="container" id="main">
+    <img src="logo.png" alt="شعار نبذة" style="max-width: 150px; display:block; margin:auto; margin-bottom: 1rem;">
+    <div id="intro">
+      <h1>اختبر ميولك.. اكتشف مستقبلك</h1>
+      <p>أهلاً بك في اختبار "نبذة" لتحديد الميول الأكاديمية. صُمم هذا الاختبار ليحلل شخصيتك وشغفك ويوجهك نحو التخصصات الجامعية التي تناسبك.</p>
+      <ul>
+        <li>ميولك العامة</li>
+        <li>طريقة تعلمك المفضلة</li>
+        <li>هواياتك واهتماماتك</li>
+      </ul>
+      <button onclick="startTest()">🚀 ابدأ الاختبار</button>
+    </div>
+
+    <div id="questionSection" class="hidden">
+      <!-- Content generated by JS -->
+    </div>
+    <div id="resultSection" class="hidden">
+      <!-- Content generated by JS -->
+    </div>
+  </div>
+
+<script>
+    // --- Data Sections (Questions & Majors) ---
+    const sections = [
+        // Using the same complete questions from the previous version
+        {
+        title: "ميولك العامة",
+        questions: [
+          { q: "هل تهتم بالرسم والتصميم والألوان؟", a: ["نعم", "لا"], key: "art" }, // Strong for Fine Arts
+          { q: "هل تحب حل المعادلات والمسائل الرياضية المنطقية؟", a: ["نعم", "لا"], key: "math" }, // Strong for Eng, CS, Science
+          { q: "هل تفضل القراءة عن التاريخ والحضارات والمجتمعات؟", a: ["نعم", "لا"], key: "history" }, // Strong for Humanities
+          { q: "هل تشعر بالرضا عند مساعدة الآخرين وفهم سلوكهم؟", a: ["نعم", "لا"], key: "social" }, // Strong for Medicine, Humanities
+          { q: "هل تجد متعة في كتابة الأكواد البرمجية وتطوير المواقع؟", a: ["نعم", "لا"], key: "cs" }, // VERY Strong for CS
+          { q: "هل تستمتع بتحليل البيانات والمعلومات لاستخلاص النتائج؟", a: ["نعم", "لا"], key: "data" }, // Strong for CS, Business
+          { q: "هل تهتم بعالم المال والأعمال وإدارة المشاريع؟", a: ["نعم", "لا"], key: "business" }, // VERY Strong for Business
+          { q: "هل تحب العمل في المختبرات وإجراء التجارب العلمية؟", a: ["نعم", "لا"], key: "lab" }, // Strong for Science, Medicine
+          { q: "هل تهتم بالصحة والتغذية وتركيب جسم الإنسان؟", a: ["نعم", "لا"], key: "health" }, // VERY Strong for Medicine
+          { q: "هل تهتم بتعلم اللغات الأخرى وثقافاتها؟", a: ["نعم", "لا"], key: "languages" }, // Strong for Humanities, Media
+          { q: "هل تهوى فك وتركيب الأجهزة وفهم طريقة عملها الميكانيكية؟", a: ["نعم", "لا"], key: "engineering" }, // VERY Strong for Engineering
+          { q: "هل تحب المسرح أو التمثيل أو الوقوف أمام جمهور؟", a: ["نعم", "لا"], key: "acting" }, // Strong for Media
+          { q: "هل تفضل العمل في بيئة مكتبية منظمة ذات قواعد واضحة؟", a: ["نعم", "لا"], key: "organization" }, // Mild for Business
+          { q: "هل تحب العمل في مجال الإعلام، مثل صناعة المحتوى أو التقديم؟", a: ["نعم", "لا"], key: "media" }, // VERY Strong for Media
+          { q: "هل تهتم بتكنولوجيا المعلومات بشكل عام، مثل الشبكات وأمن المعلومات؟", a: ["نعم", "لا"], key: "it" } // Strong for CS
+        ]
+      },
+      {
+        title: "طريقة التعلم المفضلة",
+        questions: [
+          { q: "تفضل أن تتعلم من خلال:", a: ["مشاهدة فيديوهات وتطبيقات بصرية", "قراءة كتب ومقالات نصية", "تجارب عملية وتطبيق مباشر"], key: "learning_visual" },
+          { q: "تفهم المعلومات بشكل أعمق عندما:", a: ["تستمع لشرحها من خبير", "تقوم بكتابتها وتلخيصها بنفسك", "تجربها وتطبقها بيديك"], key: "learning_process" },
+          { q: "ما هي بيئة التعلم الأكثر راحة لك:", a: ["الدراسة الفردية والتركيز العميق", "المناقشة ضمن مجموعات عمل", "التطبيق في ورش عمل ومشاريع"], key: "learning_env" }
+        ]
+      },
+      {
+        title: "هواياتك واهتماماتك",
+        questions: [
+          { q: "اختر الهوايات التي تمارسها أو تحبها (يمكن اختيار أكثر من إجابة):", a: ["الرسم", "الكتابة", "الألعاب الإلكترونية", "الأعمال اليدوية", "القراءة", "البرمجة", "التطوع", "الرياضة", "الموسيقى", "التصوير"], key: "hobbies" }
+        ]
+      }
+    ];
+    const majors = { // Using the same detailed info from the previous version
+        medicine: { name: "الطب البشري", score: 0, icon: "fa-solid fa-user-doctor", details: `<strong>تعريف:</strong> تخصص يركز على تشخيص الأمراض وعلاجها والوقاية منها للحفاظ على صحة الإنسان.<br><strong>سنوات الدراسة:</strong> 5 سنوات دراسة أكاديمية + 2 سنة امتياز (تدريب إلزامي).<br><strong>أهم الأقسام:</strong> الجراحة العامة، الباطنة، طب الأطفال، النساء والتوليد، طب العيون، الأمراض الجلدية.<br><strong>كليات متاحة (أمثلة):</strong> طب القاهرة، عين شمس، الإسكندرية (حكومي) - جامعة مصر للعلوم والتكنولوجيا، جامعة 6 أكتوبر (خاص).<div class="tansik-note"><strong>تنسيق استرشادي (علمي علوم 2024):</strong> حوالي 91.3% (ملاحظة: يتغير سنوياً).</div>` },
+        engineering: { name: "الهندسة", score: 0, icon: "fa-solid fa-gears", details: `<strong>تعريف:</strong> تطبيق النظريات العلمية والرياضية لتصميم وتطوير الحلول للمشكلات التقنية.<br><strong>سنوات الدراسة:</strong> 5 سنوات (تشمل السنة الإعدادية).<br><strong>أهم الأقسام:</strong> الهندسة المدنية، المعمارية، الميكانيكية، الكهربائية (اتصالات، قوى)، هندسة الحاسبات.<br><strong>كليات متاحة (أمثلة):</strong> هندسة القاهرة، عين شمس، الإسكندرية (حكومي) - الجامعة الأمريكية، الألمانية، المصرية اليابانية (خاص/أهلي).<div class="tansik-note"><strong>تنسيق استرشادي (علمي رياضة 2024):</strong> حوالي 85% (ملاحظة: يتغير سنوياً).</div>` },
+        computer_science: { name: "الحاسبات والمعلومات", score: 0, icon: "fa-solid fa-code", details: `<strong>تعريف:</strong> دراسة أسس الحوسبة، البرمجة، الخوارزميات، والذكاء الاصطناعي لتطوير البرمجيات والنظم.<br><strong>سنوات الدراسة:</strong> 4 سنوات.<br><strong>أهم الأقسام:</strong> علوم الحاسب، نظم المعلومات، تكنولوجيا المعلومات، الذكاء الاصطناعي، الأمن السيبراني.<br><strong>كليات متاحة (أمثلة):</strong> حاسبات ومعلومات القاهرة، عين شمس، حلوان (حكومي) - جامعة المستقبل، جامعة النيل (خاص/أهلي).<div class="tansik-note"><strong>تنسيق استرشادي (علمي 2024):</strong> حوالي 82% لعلوم، 78% لرياضة (ملاحظة: يتغير سنوياً).</div>` },
+        fine_arts: { name: "الفنون الجميلة", score: 0, icon: "fa-solid fa-palette", details: `<strong>تعريف:</strong> تخصص ينمي المهارات الإبداعية والبصرية في مجالات فنية متنوعة.<br><strong>سنوات الدراسة:</strong> 5 سنوات.<br><strong>أهم الأقسام:</strong> قسم العمارة، قسم الديكور، قسم الجرافيك، قسم التصوير، قسم النحت.<br><strong>كليات متاحة (أمثلة):</strong> فنون جميلة (الزمالك)، الإسكندرية، حلوان، الأقصر، المنصورة.<div class="tansik-note"><strong>تنسيق استرشادي (2024):</strong> يتطلب اجتياز اختبار القدرات. المجموع حوالي 75% (علمي) و 70% (أدبي) (ملاحظة: يتغير سنوياً).</div>` },
+        media: { name: "الإعلام", score: 0, icon: "fa-solid fa-bullhorn", details: `<strong>تعريف:</strong> دراسة وسائل الاتصال الجماهيري وكيفية صناعة المحتوى الإعلامي ونقله للجمهور.<br><strong>سنوات الدراسة:</strong> 4 سنوات.<br><strong>أهم الأقسام:</strong> الصحافة والنشر، الإذاعة والتلفزيون، العلاقات العامة والإعلان.<br><strong>كليات متاحة (أمثلة):</strong> إعلام القاهرة، بني سويف (حكومي) - جامعة مصر الدولية، جامعة أكتوبر للعلوم الحديثة (خاص).<div class="tansik-note"><strong>تنسيق استرشادي (علمي وأدبي 2024):</strong> حوالي 78% (ملاحظة: يتغير سنوياً).</div>` },
+        business: { name: "إدارة الأعمال (التجارة)", score: 0, icon: "fa-solid fa-briefcase", details: `<strong>تعريف:</strong> تخصص يدرس كيفية إدارة الشركات والمؤسسات من النواحي المالية والتسويقية والإدارية.<br><strong>سنوات الدراسة:</strong> 4 سنوات.<br><strong>أهم الأقسام:</strong> إدارة الأعمال، المحاسبة، الاقتصاد، الإحصاء، التمويل والاستثمار.<br><strong>كليات متاحة (أمثلة):</strong> تجارة القاهرة، عين شمس، الإسكندرية (حكومي) - إدارة أعمال الجامعة الأمريكية، الكندية (خاص).<div class="tansik-note"><strong>تنسيق استرشادي (علمي وأدبي 2024):</strong> حوالي 70% (ملاحظة: يتغير سنوياً).</div>` },
+        humanities: { name: "الآداب والعلوم الإنسانية", score: 0, icon: "fa-solid fa-book-open", details: `<strong>تعريف:</strong> مجموعة واسعة من التخصصات التي تدرس التجربة البشرية، اللغات، والتاريخ، والفلسفة.<br><strong>سنوات الدراسة:</strong> 4 سنوات.<br><strong>أهم الأقسام:</strong> اللغات (إنجليزية، فرنسية، إلخ)، التاريخ، الجغرافيا، الفلسفة، علم النفس، علم الاجتماع.<br><strong>كليات متاحة (أمثلة):</strong> آداب القاهرة، عين شمس، الإسكندرية (متوفرة في معظم الجامعات الحكومية).<div class="tansik-note"><strong>تنسيق استرشادي (علمي وأدبي 2024):</strong> يبدأ من حوالي 65% (ملاحظة: يتغير سنوياً).</div>` },
+        science: { name: "العلوم", score: 0, icon: "fa-solid fa-flask-vial", details: `<strong>تعريف:</strong> دراسة العلوم الطبيعية الأساسية كالكيمياء والفيزياء والأحياء لفهم الظواهر الطبيعية.<br><strong>سنوات الدراسة:</strong> 4 سنوات.<br><strong>أهم الأقسام:</strong> الكيمياء، الفيزياء، الرياضيات، علم الحيوان، علم النبات، الجيولوجيا، علوم الحاسب (قسم داخل الكلية).<br><strong>كليات متاحة (أمثلة):</strong> علوم القاهرة، عين شمس، الإسكندرية (متوفرة في معظم الجامعات الحكومية).<div class="tansik-note"><strong>تنسيق استرشادي (علمي 2024):</strong> حوالي 75% لعلوم، 68% لرياضة (ملاحظة: يتغير سنوياً).</div>` }
+    };
+    
+    // --- Application State & Logic ---
+    let currentSection = 0;
+    let currentQuestion = 0;
+    let userAnswers = [];
+    const questionSectionEl = document.getElementById('questionSection');
+    const resultSectionEl = document.getElementById('resultSection');
+
+    function startTest() {
+      document.getElementById("intro").classList.add("hidden");
+      questionSectionEl.classList.remove("hidden");
+      questionSectionEl.classList.add("animate-question");
+      showQuestion();
+    }
+
+    function showQuestion() {
+        const section = sections[currentSection];
+        const question = section.questions[currentQuestion];
+        let questionHtml = `
+            <div class="animate-question">
+                <h2 id="sectionTitle">القسم ${currentSection + 1} من ${sections.length}: ${section.title}</h2>
+                <div id="questionContainer" class="question-box">
+                    <strong>سؤال ${currentQuestion + 1} / ${section.questions.length}:</strong><br>${question.q}
+                </div>
+                <div class="answers" id="answerContainer">
+                    ${(question.key === "hobbies" ? 
+                        question.a.map(opt => `<label><input type="checkbox" name="q" value="${opt}"> <span>${opt}</span></label>`).join('') :
+                        question.a.map(opt => `<label><input type="radio" name="q" value="${opt}"> <span>${opt}</span></label>`).join(''))
+                    }
+                </div>
+                <button onclick="nextQuestion()">التالي</button>
+            </div>
+        `;
+        questionSectionEl.innerHTML = questionHtml;
+    }
+
+    function nextQuestion() {
+        const selectedAnswers = Array.from(document.querySelectorAll("input[name='q']:checked")).map(el => el.value);
+        if (selectedAnswers.length === 0) {
+            alert("من فضلك اختر إجابة للمتابعة.");
+            return;
+        }
+        
+        const key = sections[currentSection].questions[currentQuestion].key;
+        userAnswers.push({ key: key, answer: selectedAnswers });
+
+        currentQuestion++;
+        if (currentQuestion >= sections[currentSection].questions.length) {
+            currentSection++;
+            currentQuestion = 0;
+        }
+
+        if (currentSection >= sections.length) {
+            questionSectionEl.classList.add("hidden");
+            calculateAndShowResults();
+        } else {
+            showQuestion();
+        }
+    }
+    
+    function calculateAndShowResults() {
+        /* --- NEW: Weighted Scoring Logic --- */
+        Object.values(majors).forEach(m => m.score = 0);
+
+        userAnswers.forEach(({ key, answer }) => {
+            const ans = answer[0];
+            const isYes = ans === 'نعم';
+
+            if (key === 'health') { if (isYes) majors.medicine.score += 5; else majors.medicine.score -= 2; }
+            if (key === 'engineering') { if (isYes) majors.engineering.score += 5; else majors.engineering.score -= 2; }
+            if (key === 'cs') { if (isYes) majors.computer_science.score += 5; }
+            if (key === 'business') { if (isYes) majors.business.score += 5; }
+            if (key === 'media') { if (isYes) majors.media.score += 4; }
+            if (key === 'art') { if (isYes) majors.fine_arts.score += 4; }
+
+            if (key === 'math' && isYes) { majors.engineering.score += 3; majors.computer_science.score += 3; majors.science.score += 2; majors.business.score += 1; }
+            if (key === 'social' && isYes) { majors.medicine.score += 2; majors.humanities.score += 3; majors.media.score += 1; }
+            if (key === 'lab' && isYes) { majors.science.score += 4; majors.medicine.score += 2; }
+            if (key === 'history' && isYes) { majors.humanities.score += 4; }
+            if (key === 'languages' && isYes) { majors.humanities.score += 3; majors.media.score += 2; }
+            if (key === 'it' && isYes) { majors.computer_science.score += 3; }
+            if (key === 'data' && isYes) { majors.computer_science.score += 2; majors.business.score += 2; }
+            if (key === 'acting' && isYes) { majors.media.score += 2; majors.fine_arts.score += 1; }
+            if (key === 'organization' && isYes) { majors.business.score += 1; }
+            
+            if (key === 'learning_process') {
+                if (ans.includes('تطبقها')) { majors.engineering.score += 2; majors.science.score += 2; majors.fine_arts.score += 2; majors.medicine.score += 1; }
+                if (ans.includes('كتابتها')) { majors.humanities.score += 1; }
+            }
+            if (key === 'learning_env') {
+                if (ans.includes('ورش عمل')) { majors.engineering.score += 2; majors.fine_arts.score += 2; }
+                if (ans.includes('مجموعات')) { majors.business.score += 1; majors.media.score += 1; }
+            }
+
+            if (key === 'hobbies') {
+                if (answer.includes('البرمجة')) majors.computer_science.score += 4;
+                if (answer.includes('الرسم') || answer.includes('الأعمال اليدوية')) majors.fine_arts.score += 3;
+                if (answer.includes('التصوير')) majors.media.score += 2;
+                if (answer.includes('الكتابة') || answer.includes('القراءة')) { majors.humanities.score += 2; majors.media.score += 1; }
+                if (answer.includes('الألعاب الإلكترونية')) majors.computer_science.score += 1;
+                if (answer.includes('التطوع')) majors.medicine.score += 1;
+            }
+        });
+
+        const sortedMajors = Object.values(majors).sort((a, b) => b.score - a.score);
+        
+        resultSectionEl.classList.remove("hidden");
+        resultSectionEl.innerHTML = `
+            <div class="animate-question">
+                <h2>النتائج النهائية والترشيحات</h2>
+                <div class="result-box" id="resultText">
+                    <p>بناءً على إجاباتك، هذه أبرز ٣ تخصصات تتوافق مع ميولك:</p>
+                    <ul>
+                        <li>${sortedMajors[0].name}</li>
+                        <li>${sortedMajors[1].name}</li>
+                        <li>${sortedMajors[2].name}</li>
+                    </ul>
+                </div>
+                <p style="text-align:center; margin-top:1.5rem;">اضغط على التخصص لمعرفة نبذة شاملة عنه:</p>
+                <div id="detailsContainer" style="text-align:center;">
+                    ${sortedMajors.slice(0, 3).map(major => 
+                        `<button class="details-button" onclick="showDetails('${major.name}')">${major.name}</button>`
+                    ).join('')}
+                </div>
+                <div id="detail-display" class="hidden"></div>
+                <button onclick="restartTest()">إعادة الاختبار</button>
+            </div>
+        `;
+    }
+
+    function showDetails(majorName) {
+        const major = Object.values(majors).find(m => m.name === majorName);
+        const detailDisplay = document.getElementById("detail-display");
+        detailDisplay.innerHTML = `<h3><i class="${major.icon}"></i> ${major.name}</h3><p>${major.details}</p>`;
+        detailDisplay.classList.remove("hidden");
+        detailDisplay.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function restartTest() {
+        currentSection = 0;
+        currentQuestion = 0;
+        userAnswers = [];
+        resultSectionEl.classList.add("hidden");
+        document.getElementById("intro").classList.remove("hidden");
+    }
+</script>
+</body>
+</html>
